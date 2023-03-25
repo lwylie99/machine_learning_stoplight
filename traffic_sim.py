@@ -4,7 +4,7 @@ import arcade as a
 from auto_mobile import Automobile
 from stop_light import StopLight
 
-class TrafficSim(a.Window):
+class Game(a.Window):
 
     BLACK = a.color.BLACK
     WHITE = a.color.WHITE
@@ -13,12 +13,11 @@ class TrafficSim(a.Window):
 
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
-        a.set_background_color(self.BLACK)
+        a.set_background_color(a.color.AIR_SUPERIORITY_BLUE)
 
         # Create the cars
         self.cars = a.SpriteList()
         for i in range(10):
-            # C:\Users\Lauren\anaconda3\envs\machine_learning\Lib\site-packages\arcade\resources\gui_basic_assets\items
             car = Automobile(":resources:gui_basic_assets/items/shield_gold.png".format(r.randint(1, 7)), 0.5)
             car.center_x = r.randint(0, self.width - car.width)
             car.center_y = self.height + car.length
@@ -49,3 +48,9 @@ class TrafficSim(a.Window):
 
         # Update the intersection
         self.light.update(delta_time)
+        
+    
+    def on_mouse_press(self, x, y, button, modifiers):
+        for stoplight in self.stoplights:
+            if stoplight.collides_with_point((x, y)):
+                stoplight.cycleState()
